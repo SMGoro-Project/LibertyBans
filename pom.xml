@@ -301,7 +301,6 @@
 		<module>bans-api</module>
 		<module>bans-bootstrap</module>
 		<module>bans-core</module>
-		<module>bans-core-addons</module>
 		<module>bans-env</module>
 		<module>bans-distribution</module>
 	</modules>

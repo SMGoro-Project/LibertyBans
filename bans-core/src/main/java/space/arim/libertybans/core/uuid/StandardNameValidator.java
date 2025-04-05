@@ -27,7 +27,7 @@ public class StandardNameValidator implements NameValidator {
 
 	private final Pattern validNamePattern;
 
-	private static final String VANILLA_NAME_PATTERN = "[a-zA-Z0-9_]*+";
+	private static final String VANILLA_NAME_PATTERN = "[a-zA-Z0-9_-]*+";
 
 	private StandardNameValidator(Pattern validNamePattern) {
 		this.validNamePattern = Objects.requireNonNull(validNamePattern);

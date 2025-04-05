@@ -34,7 +34,7 @@ public interface Repository {
 	 */
 	default URL locateDependency(Dependency dependency) throws MalformedURLException {
 		String urlPath = getBaseUrl() + '/' + dependency.groupId().replace('.', '/') + '/'
-				+ dependency.artifactId() + '/' + dependency.version() + '/' + dependency.artifactId() + '-'
+				+ dependency.artifactId() + '/' + dependency.version() + '/' + dependency.artifactId() + '~'
 				+ dependency.version() + ".jar";
 		return new URL(urlPath);
 	}

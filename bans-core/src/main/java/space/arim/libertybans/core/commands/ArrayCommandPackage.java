@@ -77,7 +77,7 @@ public final class ArrayCommandPackage implements CommandPackage {
 
 	@Override
 	public boolean findHiddenArgument(String argument) {
-		String searchFor = '-' + argument;
+		String searchFor = '~' + argument;
 		for (int n = 0; n < position; n++) {
 			if (args[n].equalsIgnoreCase(searchFor)) {
 				return true;
@@ -88,7 +88,7 @@ public final class ArrayCommandPackage implements CommandPackage {
 
 	@Override
 	public String findHiddenArgumentSpecifiedValue(String argPrefix) {
-		String searchFor = '-' + argPrefix + '=';
+		String searchFor = '~' + argPrefix + '=';
 		for (int n = 0; n < position; n++) {
 			if (args[n].toLowerCase(Locale.ROOT).startsWith(searchFor)) {
 				return args[n].substring(searchFor.length());

@@ -45,7 +45,7 @@ public interface CommandPackage extends Iterator<String> {
 	/**
 	 * The prefix denoting a hidden argument
 	 */
-	char HIDDEN_ARG_PREFIX = '-';
+	char HIDDEN_ARG_PREFIX = '~';
 
 	/**
 	 * Gets the current argument and advances to the next argument
