@@ -27,6 +27,7 @@ import space.arim.libertybans.core.env.EnvEnforcer;
 import space.arim.omnibus.util.concurrent.CentralisedFuture;
 
 import java.net.InetAddress;
+import java.util.Set;
 import java.util.UUID;
 
 public interface Guardian {
@@ -59,7 +60,9 @@ public interface Guardian {
 		return executeAndCheckConnection(uuid, name, NetworkAddress.of(address));
 	}
 
-	/**
+    Set<String> serversForBan();
+
+    /**
 	 * Enforces a server switch, returning a punishment message if denied, null if allowed. <br>
 	 * <br>
 	 * Queries for an applicable ban, and formats the ban reason as the punishment message.

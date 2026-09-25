@@ -34,6 +34,7 @@ import space.arim.libertybans.core.uuid.UUIDManager;
 import space.arim.omnibus.util.concurrent.CentralisedFuture;
 import space.arim.omnibus.util.concurrent.FactoryOfTheFuture;
 
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.CompletionException;
 import java.util.concurrent.TimeUnit;
@@ -96,6 +97,11 @@ public final class IntelligentGuardian implements Guardian {
 				.orTimeout(12, TimeUnit.SECONDS)
 				.exceptionally(timeoutHandler("incoming login"));
 	}
+
+    @Override
+    public Set<String> serversForBan() {
+        return configs.getMainConfig().enforcement().serversForBan();
+    }
 
 	@Override
 	public CentralisedFuture<@Nullable Component> checkServerSwitch(UUID uuid, String name, NetworkAddress address,

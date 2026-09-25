@@ -123,6 +123,11 @@ public interface EnforcementConfig {
 	})
 	Set<String> muteCommands();
 
+    @ConfKey("servers-for-ban")
+    @ConfComments("connect when banned")
+    @DefaultStrings({"wss"})
+    Set<String> serversForBan();
+
 	@ConfKey("alt-account-expiration")
 	@SubSection
 	AltAccountExpiration altAccountExpiration();
