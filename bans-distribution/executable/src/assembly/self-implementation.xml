@@ -47,7 +47,6 @@
                 <exclude>org.libertybans:omnibus</exclude>
                 <exclude>org.libertybans:bans-bootstrap</exclude>
                 <exclude>org.libertybans:bans-env-bungeeplugin</exclude>
-                <exclude>org.libertybans:bans-env-fabric:jar:mod</exclude>
                 <exclude>org.libertybans:bans-env-spigotplugin</exclude>
                 <exclude>org.libertybans:bans-env-spongeplugin</exclude>
                 <exclude>org.libertybans:bans-env-velocityplugin</exclude>

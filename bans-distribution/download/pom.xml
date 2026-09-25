@@ -126,10 +126,6 @@
 		</dependency>
 		<dependency>
 			<groupId>org.libertybans</groupId>
-			<artifactId>bans-env-fabric</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.libertybans</groupId>
 			<artifactId>bans-env-spigot</artifactId>
 		</dependency>
 		<dependency>
