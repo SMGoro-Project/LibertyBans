@@ -25,6 +25,7 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * A command argument iterator. Defines several means for accessing command arguments: <br>
@@ -52,6 +53,19 @@ public final class CommandPackage implements CommandSource {
 	 */
 	private static final char HIDDEN_ARG_PREFIX = '-';
 
+	/**
+	 * The names of the hidden arguments which LibertyBans recognizes, including those
+	 * taking a value in the form {@code -name=value}.
+	 * <p>
+	 * Only arguments with one of these names are hidden; every other argument is an
+	 * ordinary argument, even if it begins with {@link #HIDDEN_ARG_PREFIX}. This is
+	 * essential because player names may legitimately begin with that character - for
+	 * instance, {@code /ban -xLinAwA}. When adding a new hidden argument, its name must
+	 * be registered here, or it will be treated as a normal command argument.
+	 */
+	private static final Set<String> HIDDEN_ARGUMENT_NAMES =
+			Set.of("s", "both", "uuid-only", "server", "category", "scope");
+
 	private CommandPackage(CommandSource source, Map<String, String> hiddenArguments) {
 		this.source = Objects.requireNonNull(source, "source");
 		this.hiddenArguments = hiddenArguments;
@@ -71,7 +85,7 @@ public final class CommandPackage implements CommandSource {
 		String hiddenArg;
 		while (source.hasNext()
 				&& !(hiddenArg = source.peek()).isEmpty()
-				&& hiddenArg.charAt(0) == HIDDEN_ARG_PREFIX) {
+				&& isHiddenArgument(hiddenArg)) {
 			String next = source.next();
 			assert hiddenArg.equals(next) : "bad impl source";
 			// Then parse it and add it to our known collection
@@ -81,6 +95,24 @@ public final class CommandPackage implements CommandSource {
 					hiddenArgPieces.length == 2 ? hiddenArgPieces[1] : null
 			);
 		}
+	}
+
+	/**
+	 * Determines whether an argument is a hidden argument. An argument is hidden only if
+	 * it begins with the hidden argument prefix <i>and</i> its name is one of
+	 * {@link #HIDDEN_ARGUMENT_NAMES}. Anything else - such as a player name beginning
+	 * with a dash - is an ordinary argument.
+	 *
+	 * @param argument the argument
+	 * @return true if the argument is a hidden argument, false if it is an ordinary argument
+	 */
+	private static boolean isHiddenArgument(String argument) {
+		if (argument.charAt(0) != HIDDEN_ARG_PREFIX) {
+			return false;
+		}
+		int equalsIndex = argument.indexOf('=');
+		String name = (equalsIndex == -1) ? argument.substring(1) : argument.substring(1, equalsIndex);
+		return HIDDEN_ARGUMENT_NAMES.contains(name.toLowerCase(Locale.ROOT));
 	}
 
 	@Override
@@ -103,8 +135,9 @@ public final class CommandPackage implements CommandSource {
 	/**
 	 * Finds a certain hidden argument. See the class javadoc for the meaning of hidden arguments. <br>
 	 * <br>
-	 * The meaning of a hidden argument will depend on the implementation.
-	 * It is typical to use "-" as a special leading character to indicate hidden arguments.
+	 * A hidden argument is an argument beginning with "-" whose name appears in
+	 * {@link #HIDDEN_ARGUMENT_NAMES}. Arguments beginning with "-" but not matching a known
+	 * hidden argument - such as player names - are ordinary arguments.
 	 *
 	 * @param argument the hidden argument, excluding any special leading characters. Case insensitive
 	 * @return whether the hidden argument is present in the arguments which have been encountered so far

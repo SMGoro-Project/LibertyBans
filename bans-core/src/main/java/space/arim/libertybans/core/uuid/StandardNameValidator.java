@@ -24,7 +24,7 @@ import java.util.regex.Pattern;
 
 public class StandardNameValidator implements NameValidator {
 
-	private static final Pattern VANILLA_NAME_PATTERN = Pattern.compile("[a-zA-Z0-9_]*+");
+	private static final Pattern VANILLA_NAME_PATTERN = Pattern.compile("[a-zA-Z0-9_-]*+");
 
 	public static NameValidator vanilla() {
 		return new StandardNameValidator();

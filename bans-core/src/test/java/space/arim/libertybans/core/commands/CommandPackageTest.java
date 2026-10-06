@@ -110,25 +110,65 @@ public class CommandPackageTest {
 
 	@Test
 	public void hiddenArgOnlyCanBeFound() {
-		CommandPackage cmd = create("-gav");
+		CommandPackage cmd = create("-s");
 
-		assertTrue(cmd.findHiddenArgument("gav"), "Hidden argument can be found even if no normal arguments exist");
+		assertTrue(cmd.findHiddenArgument("s"), "Hidden argument can be found even if no normal arguments exist");
 	}
 
 	@Test
 	public void hiddenArgOnlyHasNoNormalArguments() {
-		CommandPackage cmd = create("-gav");
+		CommandPackage cmd = create("-s");
 
 		assertFalse(cmd.hasNext(), "Hidden arguments are not visible through iteration");
 		assertEquals("", cmd.allRemaining());
 	}
 
 	@Test
-	public void emptyHiddenArgument() {
+	public void unrecognizedDashArgumentIsOrdinaryArgument() {
+		CommandPackage cmd = create("-gav");
+
+		assertTrue(cmd.hasNext(), "An unrecognized argument beginning with a dash is an ordinary argument");
+		assertEquals("-gav", cmd.next());
+		assertFalse(cmd.findHiddenArgument("gav"));
+	}
+
+	@Test
+	public void recognizedDashArgumentWithValueIsStillHidden() {
+		CommandPackage cmd = create("-scope=server:lobby");
+
+		assertFalse(cmd.hasNext(), "Recognized hidden arguments are not visible through iteration");
+		assertEquals("server:lobby", cmd.findHiddenArgumentSpecifiedValue("scope"));
+	}
+
+	@Test
+	public void playerNameBeginningWithDash() {
+		CommandPackage cmd = create("-xLinAwA 7d cheating");
+
+		assertTrue(cmd.hasNext());
+		assertEquals("-xLinAwA", cmd.peek(), "A player name beginning with a dash is not a hidden argument");
+		assertEquals("-xLinAwA", cmd.next());
+		assertFalse(cmd.findHiddenArgument("xLinAwA"));
+
+		assertEquals("7d cheating", cmd.allRemaining());
+	}
+
+	@Test
+	public void playerNameBeginningWithDashAlongsideHiddenArgument() {
+		CommandPackage cmd = create("-s -xLinAwA 7d cheating");
+
+		assertEquals("-xLinAwA", cmd.next(), "The hidden argument is skipped but the player name is not");
+		assertTrue(cmd.findHiddenArgument("s"));
+		assertEquals("7d cheating", cmd.allRemaining());
+	}
+
+	@Test
+	public void loneDashIsOrdinaryArgument() {
 		CommandPackage cmd = create("arg1 -");
 
 		assertEquals("arg1", cmd.next());
-		assertTrue(cmd.findHiddenArgument(""));
+		assertTrue(cmd.hasNext());
+		assertEquals("-", cmd.next());
+		assertFalse(cmd.findHiddenArgument(""));
 	}
 
 	@Test

@@ -37,7 +37,7 @@ public class StandardNameValidatorTest {
 	}
 
 	@ParameterizedTest
-	@ValueSource(strings = {"A248", "ObsidianWolf_", "lol_haha_dead", "123Numbers"})
+	@ValueSource(strings = {"A248", "ObsidianWolf_", "lol_haha_dead", "123Numbers", "-xLinAwA", "dash-name"})
 	public void validNames(String name) {
 		assertTrue(validator.isVanillaName(name));
 	}
